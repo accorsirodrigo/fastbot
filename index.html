@@ -1,393 +1,117 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DiscordAuth - Seamless Discord Authentication</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+    
+    <!-- Primary Meta Tags -->
+    <title>DiscordAuth - Autenticação Discord Sem Complicação | Login Seguro</title>
+    <meta name="title" content="DiscordAuth - Autenticação Discord Sem Complicação | Login Seguro">
+    <meta name="description" content="Autenticação Discord simplificada para sua aplicação. Integração segura com OAuth2, gerenciamento de cargos e analytics em tempo real. Comece grátis hoje!">
+    <meta name="keywords" content="autenticação discord, login discord, oauth2 discord, integração discord, api discord, cargos discord, autenticação segura, login social">
+    <meta name="author" content="DiscordAuth">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Portuguese">
+    <meta name="revisit-after" content="7 days">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://accorsirodrigo.github.io/fastbot/">
+    <meta property="og:title" content="DiscordAuth - Autenticação Discord Sem Complicação">
+    <meta property="og:description" content="Autenticação Discord simplificada para sua aplicação. Integração segura com OAuth2, gerenciamento de cargos e analytics em tempo real.">
+    <meta property="og:image" content="https://accorsirodrigo.github.io/fastbot/images/og-image.jpg">
+    <meta property="og:site_name" content="DiscordAuth">
+    <meta property="og:locale" content="pt_BR">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://accorsirodrigo.github.io/fastbot/">
+    <meta property="twitter:title" content="DiscordAuth - Autenticação Discord Sem Complicação">
+    <meta property="twitter:description" content="Autenticação Discord simplificada para sua aplicação. Integração segura com OAuth2, gerenciamento de cargos e analytics em tempo real.">
+    <meta property="twitter:image" content="https://accorsirodrigo.github.io/fastbot/images/twitter-image.jpg">
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="theme-color" content="#5865F2">
+    <meta name="msapplication-TileColor" content="#5865F2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://accorsirodrigo.github.io/fastbot/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "DiscordAuth",
+        "description": "Autenticação Discord simplificada para aplicações web e mobile",
+        "url": "https://accorsirodrigo.github.io/fastbot/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "BRL",
+            "description": "Plano gratuito com até 100 usuários"
+        },
+        "provider": {
+            "@type": "Organization",
+            "name": "DiscordAuth",
+            "url": "https://accorsirodrigo.github.io/fastbot/"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "1250"
         }
-
-        :root {
-            --discord-purple: #5865F2;
-            --discord-dark: #2C2F33;
-            --discord-darker: #23272A;
-            --discord-light: #7289DA;
-            --discord-green: #57F287;
-            --white: #FFFFFF;
-            --gray-light: #B9BBBE;
-            --gray-dark: #4F545C;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: var(--white);
-            background-color: var(--discord-darker);
-            overflow-x: hidden;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #5865F2 0%, #7289DA 50%, #99AAB5 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: move 20s linear infinite;
-        }
-
-        @keyframes move {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
-        .hero-content {
-            text-align: center;
-            z-index: 1;
-            padding: 0 20px;
-            max-width: 800px;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            margin-bottom: 1rem;
-            font-weight: 800;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .hero p {
-            font-size: clamp(1.1rem, 2vw, 1.5rem);
-            margin-bottom: 2rem;
-            color: rgba(255,255,255,0.9);
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 15px 40px;
-            background-color: var(--white);
-            color: var(--discord-purple);
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-            background-color: var(--discord-green);
-            color: var(--white);
-        }
-
-        /* Features Section */
-        .features {
-            padding: 80px 20px;
-            background-color: var(--discord-dark);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: clamp(2rem, 4vw, 3rem);
-            margin-bottom: 3rem;
-            color: var(--white);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 3rem;
-        }
-
-        .feature-card {
-            background: linear-gradient(135deg, rgba(88, 101, 242, 0.1), rgba(114, 137, 218, 0.1));
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            transition: all 0.3s ease;
-            animation: fadeIn 0.8s ease-out forwards;
-            opacity: 0;
-        }
-
-        .feature-card:nth-child(1) { animation-delay: 0.1s; }
-        .feature-card:nth-child(2) { animation-delay: 0.2s; }
-        .feature-card:nth-child(3) { animation-delay: 0.3s; }
-        .feature-card:nth-child(4) { animation-delay: 0.4s; }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(88, 101, 242, 0.3);
-            background: linear-gradient(135deg, rgba(88, 101, 242, 0.2), rgba(114, 137, 218, 0.2));
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 20px;
-            background: var(--discord-purple);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: var(--discord-light);
-        }
-
-        .feature-card p {
-            color: var(--gray-light);
-            line-height: 1.8;
-        }
-
-        /* How It Works Section */
-        .how-it-works {
-            padding: 80px 20px;
-            background-color: var(--discord-darker);
-        }
-
-        .steps {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 40px;
-            margin-top: 50px;
-        }
-
-        .step {
-            flex: 1;
-            min-width: 250px;
-            text-align: center;
-            position: relative;
-        }
-
-        .step-number {
-            width: 60px;
-            height: 60px;
-            background: var(--discord-purple);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
-        }
-
-        .step h3 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: var(--discord-light);
-        }
-
-        .step p {
-            color: var(--gray-light);
-        }
-
-        .step:not(:last-child)::after {
-            content: '→';
-            position: absolute;
-            top: 30px;
-            right: -30px;
-            font-size: 2rem;
-            color: var(--discord-purple);
-            display: none;
-        }
-
-        @media (min-width: 768px) {
-            .step:not(:last-child)::after {
-                display: block;
-            }
-        }
-
-        /* Benefits Section */
-        .benefits {
-            padding: 80px 20px;
-            background-color: var(--discord-dark);
-        }
-
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            margin-top: 50px;
-        }
-
-        .benefit {
-            text-align: center;
-            padding: 30px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
-            transition: transform 0.3s ease;
-        }
-
-        .benefit:hover {
-            transform: scale(1.05);
-        }
-
-        .benefit-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: var(--discord-green);
-        }
-
-        .benefit h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: var(--white);
-        }
-
-        .benefit p {
-            color: var(--gray-light);
-        }
-
-        /* CTA Section */
-        .cta-section {
-            padding: 100px 20px;
-            background: linear-gradient(135deg, #5865F2 0%, #7289DA 100%);
-            text-align: center;
-        }
-
-        .cta-section h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            margin-bottom: 20px;
-        }
-
-        .cta-section p {
-            font-size: 1.3rem;
-            margin-bottom: 30px;
-            color: rgba(255,255,255,0.9);
-        }
-
-        /* Footer */
-        .footer {
-            background-color: var(--discord-darker);
-            padding: 40px 20px;
-            text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: var(--gray-light);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--discord-light);
-        }
-
-        .footer p {
-            color: var(--gray-light);
-            font-size: 0.9rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .steps {
-                flex-direction: column;
-            }
-            
-            .step::after {
-                display: none;
-            }
-        }
-    </style>
+    }
+    </script>
 </head>
 <body>
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1>Discord Authentication Made Simple</h1>
-            <p>Secure, seamless authentication for your application using Discord's trusted platform</p>
-            <a href="#features" class="cta-button">Get Started</a>
+            <h1>Autenticação Discord Simplificada</h1>
+            <p>Autenticação segura e sem complicação para sua aplicação usando a plataforma confiável do Discord</p>
+            <a href="#features" class="cta-button">Começar</a>
         </div>
     </section>
 
     <!-- Features Section -->
     <section id="features" class="features">
         <div class="container">
-            <h2 class="section-title">Powerful Features</h2>
+            <h2 class="section-title">Recursos Poderosos</h2>
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">🚀</div>
-                    <h3>Easy Integration</h3>
-                    <p>Set up Discord authentication in minutes with our simple API and comprehensive documentation</p>
+                    <h3>Integração Fácil</h3>
+                    <p>Configure a autenticação Discord em minutos com nossa API simples e documentação completa</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🔒</div>
-                    <h3>Secure Authentication</h3>
-                    <p>Enterprise-grade security with OAuth2 protocol and encrypted data transmission</p>
+                    <h3>Autenticação Segura</h3>
+                    <p>Segurança de nível empresarial com protocolo OAuth2 e transmissão de dados criptografada</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">👥</div>
-                    <h3>Role Management</h3>
-                    <p>Automatically sync Discord roles with your application's permission system</p>
+                    <h3>Gerenciamento de Cargos</h3>
+                    <p>Sincronize automaticamente os cargos do Discord com o sistema de permissões da sua aplicação</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">📊</div>
-                    <h3>Analytics Dashboard</h3>
-                    <p>Track user activity, authentication patterns, and system performance in real-time</p>
+                    <h3>Painel de Analytics</h3>
+                    <p>Acompanhe a atividade dos usuários, padrões de autenticação e performance do sistema em tempo real</p>
                 </div>
             </div>
         </div>
@@ -396,22 +120,22 @@
     <!-- How It Works Section -->
     <section class="how-it-works">
         <div class="container">
-            <h2 class="section-title">How It Works</h2>
+            <h2 class="section-title">Como Funciona</h2>
             <div class="steps">
                 <div class="step">
                     <div class="step-number">1</div>
-                    <h3>Connect Discord</h3>
-                    <p>Link your Discord application with our service using your bot token</p>
+                    <h3>Conecte o Discord</h3>
+                    <p>Conecte sua aplicação Discord com nosso serviço usando seu token de bot</p>
                 </div>
                 <div class="step">
                     <div class="step-number">2</div>
-                    <h3>Configure Permissions</h3>
-                    <p>Set up role mappings and define access levels for your users</p>
+                    <h3>Configure Permissões</h3>
+                    <p>Configure mapeamentos de cargos e defina níveis de acesso para seus usuários</p>
                 </div>
                 <div class="step">
                     <div class="step-number">3</div>
-                    <h3>Start Authenticating</h3>
-                    <p>Users can now log in to your app using their Discord credentials</p>
+                    <h3>Comece a Autenticar</h3>
+                    <p>Os usuários agora podem fazer login na sua aplicação usando suas credenciais do Discord</p>
                 </div>
             </div>
         </div>
@@ -420,22 +144,22 @@
     <!-- Benefits Section -->
     <section class="benefits">
         <div class="container">
-            <h2 class="section-title">Why Choose DiscordAuth?</h2>
+            <h2 class="section-title">Por que Escolher o DiscordAuth?</h2>
             <div class="benefits-grid">
                 <div class="benefit">
                     <div class="benefit-icon">✅</div>
-                    <h3>99.9% Uptime</h3>
-                    <p>Reliable service with redundant infrastructure ensuring maximum availability</p>
+                    <h3>99.9% de Uptime</h3>
+                    <p>Serviço confiável com infraestrutura redundante garantindo máxima disponibilidade</p>
                 </div>
                 <div class="benefit">
                     <div class="benefit-icon">🛟</div>
-                    <h3>24/7 Support</h3>
-                    <p>Expert support team ready to help you with any integration challenges</p>
+                    <h3>Suporte 24/7</h3>
+                    <p>Equipe de suporte especializada pronta para ajudar com qualquer desafio de integração</p>
                 </div>
                 <div class="benefit">
                     <div class="benefit-icon">🛡️</div>
-                    <h3>GDPR Compliant</h3>
-                    <p>Full compliance with data protection regulations to keep your users safe</p>
+                    <h3>Conforme LGPD</h3>
+                    <p>Total conformidade com regulamentações de proteção de dados para manter seus usuários seguros</p>
                 </div>
             </div>
         </div>
@@ -444,9 +168,9 @@
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="container">
-            <h2>Ready to Get Started?</h2>
-            <p>Join thousands of developers using DiscordAuth</p>
-            <a href="#" class="cta-button">Start Free Trial</a>
+            <h2>Pronto para Começar?</h2>
+            <p>Junte-se a milhares de desenvolvedores usando DiscordAuth</p>
+            <a href="pages/pricing.html" class="cta-button">Iniciar Teste Grátis</a>
         </div>
     </section>
 
@@ -454,17 +178,20 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-links">
-                <a href="#">About</a>
-                <a href="#">Documentation</a>
-                <a href="#">Pricing</a>
+                <a href="index.html">Início</a>
+                <a href="#">Sobre</a>
+                <a href="#">Documentação</a>
+                <a href="pages/pricing.html">Preços</a>
                 <a href="#">Blog</a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Contact</a>
+                <a href="#">Política de Privacidade</a>
+                <a href="#">Termos de Serviço</a>
+                <a href="#">Contato</a>
             </div>
-            <p>&copy; 2024 DiscordAuth. All rights reserved.</p>
+            <p>&copy; 2024 DiscordAuth. Todos os direitos reservados.</p>
         </div>
     </footer>
+
+    <script src="js/script.js"></script>
 </body>
 </html>
 

@@ -1,0 +1,536 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --discord-purple: #5865F2;
+    --discord-dark: #2C2F33;
+    --discord-darker: #23272A;
+    --discord-light: #7289DA;
+    --discord-green: #57F287;
+    --white: #FFFFFF;
+    --gray-light: #B9BBBE;
+    --gray-dark: #4F545C;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: var(--white);
+    background-color: var(--discord-darker);
+    overflow-x: hidden;
+}
+
+/* Hero Section */
+.hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #5865F2 0%, #7289DA 50%, #99AAB5 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: move 20s linear infinite;
+}
+
+@keyframes move {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+}
+
+.hero-content {
+    text-align: center;
+    z-index: 1;
+    padding: 0 20px;
+    max-width: 800px;
+    animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    margin-bottom: 1rem;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero p {
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    margin-bottom: 2rem;
+    color: rgba(255,255,255,0.9);
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 15px 40px;
+    background-color: var(--white);
+    color: var(--discord-purple);
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    background-color: var(--discord-green);
+    color: var(--white);
+}
+
+/* Features Section */
+.features {
+    padding: 80px 20px;
+    background-color: var(--discord-dark);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-title {
+    text-align: center;
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 3rem;
+    color: var(--white);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 3rem;
+}
+
+.feature-card {
+    background: linear-gradient(135deg, rgba(88, 101, 242, 0.1), rgba(114, 137, 218, 0.1));
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+    animation: fadeIn 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+.feature-card:nth-child(1) { animation-delay: 0.1s; }
+.feature-card:nth-child(2) { animation-delay: 0.2s; }
+.feature-card:nth-child(3) { animation-delay: 0.3s; }
+.feature-card:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(88, 101, 242, 0.3);
+    background: linear-gradient(135deg, rgba(88, 101, 242, 0.2), rgba(114, 137, 218, 0.2));
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 20px;
+    background: var(--discord-purple);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: var(--discord-light);
+}
+
+.feature-card p {
+    color: var(--gray-light);
+    line-height: 1.8;
+}
+
+/* Pricing Cards */
+.pricing-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 600px;
+    padding: 40px 30px;
+}
+
+.pricing-card.featured {
+    border: 2px solid var(--discord-purple);
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(88, 101, 242, 0.3);
+}
+
+.pricing-badge {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--discord-green);
+    color: var(--white);
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    z-index: 2;
+}
+
+.pricing-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.pricing-header h3 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: var(--white);
+}
+
+.price {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.currency {
+    font-size: 1.5rem;
+    color: var(--gray-light);
+    margin-right: 5px;
+}
+
+.amount {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--discord-light);
+}
+
+.period {
+    font-size: 1.2rem;
+    color: var(--gray-light);
+    margin-left: 5px;
+}
+
+.pricing-description {
+    color: var(--gray-light);
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+.pricing-features {
+    flex-grow: 1;
+    margin: 30px 0;
+}
+
+.pricing-features ul {
+    list-style: none;
+    text-align: left;
+}
+
+.pricing-features li {
+    padding: 8px 0;
+    color: var(--gray-light);
+    font-size: 1rem;
+}
+
+.pricing-btn {
+    width: 100%;
+    margin-top: auto;
+}
+
+/* Comparison Table */
+.comparison-table {
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 50px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.table-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    background: rgba(88, 101, 242, 0.2);
+    padding: 20px;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.table-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: background-color 0.3s ease;
+}
+
+.table-row:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.feature-name {
+    font-weight: 500;
+    color: var(--white);
+}
+
+.plan-free, .plan-pro {
+    text-align: center;
+    color: var(--gray-light);
+}
+
+.plan-pro {
+    color: var(--discord-green);
+    font-weight: 600;
+}
+
+/* FAQ Grid */
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.faq-item {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 25px;
+    transition: transform 0.3s ease;
+}
+
+.faq-item:hover {
+    transform: translateY(-5px);
+    background: rgba(255,255,255,0.08);
+}
+
+.faq-item h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: var(--discord-light);
+}
+
+.faq-item p {
+    color: var(--gray-light);
+    line-height: 1.6;
+}
+
+/* How It Works Section */
+.how-it-works {
+    padding: 80px 20px;
+    background-color: var(--discord-darker);
+}
+
+.steps {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.step {
+    flex: 1;
+    min-width: 250px;
+    text-align: center;
+    position: relative;
+}
+
+.step-number {
+    width: 60px;
+    height: 60px;
+    background: var(--discord-purple);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
+}
+
+.step h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: var(--discord-light);
+}
+
+.step p {
+    color: var(--gray-light);
+}
+
+.step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    top: 30px;
+    right: -30px;
+    font-size: 2rem;
+    color: var(--discord-purple);
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .step:not(:last-child)::after {
+        display: block;
+    }
+}
+
+/* Benefits Section */
+.benefits {
+    padding: 80px 20px;
+    background-color: var(--discord-dark);
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.benefit {
+    text-align: center;
+    padding: 30px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.benefit:hover {
+    transform: scale(1.05);
+}
+
+.benefit-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: var(--discord-green);
+}
+
+.benefit h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: var(--white);
+}
+
+.benefit p {
+    color: var(--gray-light);
+}
+
+/* CTA Section */
+.cta-section {
+    padding: 100px 20px;
+    background: linear-gradient(135deg, #5865F2 0%, #7289DA 100%);
+    text-align: center;
+}
+
+.cta-section h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 20px;
+}
+
+.cta-section p {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    color: rgba(255,255,255,0.9);
+}
+
+/* Footer */
+.footer {
+    background-color: var(--discord-darker);
+    padding: 40px 20px;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: var(--gray-light);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--discord-light);
+}
+
+.footer p {
+    color: var(--gray-light);
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .steps {
+        flex-direction: column;
+    }
+    
+    .step::after {
+        display: none;
+    }
+
+    .pricing-card.featured {
+        transform: none;
+    }
+
+    .comparison-table {
+        font-size: 0.9rem;
+    }
+
+    .table-header, .table-row {
+        grid-template-columns: 1.5fr 1fr 1fr;
+        padding: 15px 10px;
+    }
+
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+} 
