@@ -1,0 +1,59 @@
+GOOGLE ANALYTICS 4 - CONFIGURAÇÃO RÁPIDA
+==========================================
+
+1. CRIAR CONTA GOOGLE ANALYTICS
+   https://analytics.google.com/
+
+2. CRIAR PROPRIEDADE GA4
+   - Nome: DiscordAuth
+   - Fuso horário: America/Sao_Paulo
+   - Moeda: BRL
+
+3. CRIAR STREAM DE DADOS WEB
+   - URL: https://seu-site.com
+   - Nome: DiscordAuth Web
+
+4. COPIAR MEASUREMENT ID
+   Formato: G-XXXXXXXXXX
+
+5. CONFIGURAR NO CÓDIGO
+   Edite: js/analytics.js
+   Linha 10: measurementId: 'G-XXXXXXXXXX'
+   
+   OU
+   
+   Edite: js/config.js
+   Linha 103: measurementId: 'G-XXXXXXXXXX'
+
+6. PRONTO!
+   O tracking está automático em todas as páginas.
+
+EVENTOS RASTREADOS AUTOMATICAMENTE:
+- page_view (visualizações de página)
+- cta_click (cliques em botões CTA)
+- pricing_click (cliques em planos)
+- form_submit (submissões de formulário)
+- social_auth_click (login social)
+- scroll_depth (profundidade de scroll)
+- time_on_page (tempo na página)
+- external_link_click (links externos)
+- signup_complete (cadastros)
+- login (autenticações)
+- error (erros)
+
+DESABILITAR EM LOCALHOST:
+O analytics já detecta localhost automaticamente e não rastreia.
+
+COMPLIANCE LGPD:
+- anonymize_ip: true (IPs anonimizados)
+- Respeita Do Not Track do navegador
+- Cookie flags: SameSite=None;Secure
+
+TESTAR:
+1. Acesse: https://analytics.google.com/
+2. Menu: Relatórios > Tempo real
+3. Navegue no site
+4. Veja eventos em tempo real
+
+SUPPORT: https://support.google.com/analytics
+

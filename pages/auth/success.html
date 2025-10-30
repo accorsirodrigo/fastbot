@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Autenticação Realizada - DiscordAuth</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="../../css/styles.css">
+    
+    <style>
+        .auth-success-section {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #5865F2 0%, #7289DA 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-success-container {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(44, 47, 51, 0.95);
+            border-radius: 20px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--discord-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            animation: checkmark 0.8s ease-in-out;
+        }
+
+        @keyframes checkmark {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2) rotate(180deg);
+            }
+            100% {
+                transform: scale(1) rotate(360deg);
+                opacity: 1;
+            }
+        }
+
+        .auth-success-icon svg {
+            width: 40px;
+            height: 40px;
+            stroke: white;
+            stroke-width: 3;
+            fill: none;
+        }
+
+        .auth-success-container h1 {
+            font-size: 2rem;
+            color: var(--white);
+            margin-bottom: 15px;
+        }
+
+        .auth-success-container p {
+            color: var(--gray-light);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--discord-purple);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .auth-error-message {
+            background: rgba(255, 87, 87, 0.1);
+            border: 1px solid rgba(255, 87, 87, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            color: #ff5757;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .auth-user-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .auth-user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+        }
+
+        .auth-user-name {
+            color: var(--white);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .auth-user-email {
+            color: var(--gray-light);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <section class="auth-success-section">
+        <div class="auth-success-container">
+            <div class="auth-success-icon" id="successIcon">
+                <svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            
+            <h1 id="statusTitle">Autenticação Realizada!</h1>
+            <p id="statusMessage">Configurando sua conta...</p>
+            
+            <div class="loading-spinner" id="loadingSpinner"></div>
+            
+            <div class="auth-error-message" id="errorMessage"></div>
+            
+            <div class="auth-user-info" id="userInfo">
+                <img class="auth-user-avatar" id="userAvatar" src="" alt="Avatar">
+                <div class="auth-user-name" id="userName"></div>
+                <div class="auth-user-email" id="userEmail"></div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../../js/config.js"></script>
+    <script src="../../js/script.js"></script>
+    <script src="../../js/components.js"></script>
+    <script src="../../js/analytics.js"></script>
+    <script src="../../js/auth-callback.js"></script>
+</body>
+</html>
+
