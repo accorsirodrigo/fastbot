@@ -9,7 +9,7 @@
     // Configuração do Google Analytics
     const GA_CONFIG = {
         // Substitua pelo seu ID do Google Analytics
-        measurementId: 'G-XXXXXXXXXX', // Formato: G-XXXXXXXXXX
+        measurementId: 'G-JNGCCDF9NP', // Formato: G-XXXXXXXXXX
         enabled: true, // Set false para desabilitar em desenvolvimento
         
         // Configurações adicionais
