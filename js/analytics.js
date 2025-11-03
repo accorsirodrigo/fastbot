@@ -32,9 +32,24 @@
         const doNotTrack = navigator.doNotTrack === '1' || 
                           window.doNotTrack === '1';
         
-        return GA_CONFIG.enabled && 
-               GA_CONFIG.measurementId !== 'G-XXXXXXXXXX' && 
-               !isLocalhost;
+        // Verificar consentimento de cookies
+        const hasConsent = window.CookieConsent ? 
+                window.CookieConsent.isEnabled('analytics') : false;
+        
+        return GA_CONFIG.enabled &&
+                !isLocalhost &&
+                hasConsent;
+    }
+    
+    /**
+     * Verifica consentimento antes de inicializar
+     */
+    function checkConsentAndInitialize() {
+        if (window.cookieConsent && window.cookieConsent.analytics) {
+            initializeAnalytics();
+        } else {
+            console.log('📊 Google Analytics aguardando consentimento de cookies');
+        }
     }
     
     /**
@@ -303,8 +318,25 @@
         isEnabled: isEnabled
     };
     
-    // Auto-inicializar
-    initializeAnalytics();
+    // Aguardar consentimento de cookies
+    window.addEventListener('cookieConsentChanged', function(e) {
+        const preferences = e.detail;
+        console.log('🍪 Consentimento de cookies alterado:', preferences);
+        
+        if (preferences.analytics) {
+            console.log('📊 Inicializando Analytics após consentimento');
+            initializeAnalytics();
+        } else {
+            console.log('📊 Analytics desabilitado por falta de consentimento');
+        }
+    });
+    
+    // Verificar se já existe consentimento ao carregar
+    if (window.cookieConsent) {
+        checkConsentAndInitialize();
+    }
+    
+    // Inicializar tracking (não depende de consentimento)
     initializeTracking();
     
 })();

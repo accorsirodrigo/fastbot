@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - Sistema de Consentimento de Cookies</title>
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/cookie-consent.css">
+    
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: var(--discord-dark);
+            border-radius: 15px;
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+        
+        .test-section h2 {
+            color: var(--discord-light);
+            margin-bottom: 15px;
+        }
+        
+        .test-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--discord-purple);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .test-button:hover {
+            background: var(--discord-light);
+            transform: translateY(-2px);
+        }
+        
+        .test-output {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: monospace;
+            color: var(--discord-green);
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-enabled {
+            background: var(--discord-green);
+        }
+        
+        .status-disabled {
+            background: #ff5757;
+        }
+        
+        .info-box {
+            background: rgba(87, 242, 135, 0.1);
+            border: 1px solid var(--discord-green);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            color: var(--gray-light);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 style="text-align: center; color: white; margin-bottom: 30px;">
+            🍪 Sistema de Consentimento de Cookies - Teste
+        </h1>
+        
+        <!-- Status Atual -->
+        <div class="test-section">
+            <h2>📊 Status Atual</h2>
+            <div id="statusDisplay"></div>
+            <button class="test-button" onclick="updateStatus()">🔄 Atualizar Status</button>
+        </div>
+        
+        <!-- Controles -->
+        <div class="test-section">
+            <h2>🎮 Controles</h2>
+            <button class="test-button" onclick="CookieConsent.openSettings()">
+                ⚙️ Abrir Configurações
+            </button>
+            <button class="test-button" onclick="resetConsent()">
+                🔄 Resetar Consentimento
+            </button>
+            <button class="test-button" onclick="testAnalytics()">
+                📊 Testar Analytics
+            </button>
+        </div>
+        
+        <!-- Testes de API -->
+        <div class="test-section">
+            <h2>🔧 Testes de API</h2>
+            <button class="test-button" onclick="testIsEnabled('analytics')">
+                Verificar Analytics
+            </button>
+            <button class="test-button" onclick="testIsEnabled('marketing')">
+                Verificar Marketing
+            </button>
+            <button class="test-button" onclick="testGetPreferences()">
+                Ver Preferências
+            </button>
+            <div class="test-output" id="apiOutput">Clique em um botão para testar a API...</div>
+        </div>
+        
+        <!-- Eventos -->
+        <div class="test-section">
+            <h2>📡 Monitor de Eventos</h2>
+            <div class="test-output" id="eventLog">Aguardando eventos...</div>
+            <button class="test-button" onclick="clearEventLog()">🗑️ Limpar Log</button>
+        </div>
+        
+        <!-- Informações -->
+        <div class="info-box">
+            <strong>ℹ️ Como usar este teste:</strong><br>
+            1. Recarregue a página para ver o banner de consentimento<br>
+            2. Escolha suas preferências de cookies<br>
+            3. Use os botões acima para testar a API<br>
+            4. Clique em "Resetar Consentimento" para ver o banner novamente
+        </div>
+    </div>
+    
+    <script src="js/config.js"></script>
+    <script src="js/cookie-consent.js"></script>
+    <script src="js/analytics.js"></script>
+    
+    <script>
+        // Log de eventos
+        let eventCount = 0;
+        const eventLog = document.getElementById('eventLog');
+        
+        function logEvent(message) {
+            eventCount++;
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = `[${timestamp}] ${eventCount}. ${message}\n`;
+            eventLog.textContent = entry + eventLog.textContent;
+        }
+        
+        function clearEventLog() {
+            eventLog.textContent = 'Log limpo. Aguardando eventos...';
+            eventCount = 0;
+        }
+        
+        // Monitorar mudanças de consentimento
+        window.addEventListener('cookieConsentChanged', function(e) {
+            const prefs = e.detail;
+            logEvent(`🍪 Consentimento alterado - Analytics: ${prefs.analytics}, Marketing: ${prefs.marketing}`);
+            updateStatus();
+        });
+        
+        // Atualizar status visual
+        function updateStatus() {
+            const prefs = CookieConsent.getPreferences();
+            const statusDiv = document.getElementById('statusDisplay');
+            
+            const necessaryStatus = '<span class="status-indicator status-enabled"></span> Cookies Necessários';
+            const analyticsStatus = prefs.analytics ? 
+                '<span class="status-indicator status-enabled"></span> Cookies Analíticos' :
+                '<span class="status-indicator status-disabled"></span> Cookies Analíticos';
+            const marketingStatus = prefs.marketing ?
+                '<span class="status-indicator status-enabled"></span> Cookies de Marketing' :
+                '<span class="status-indicator status-disabled"></span> Cookies de Marketing';
+            
+            statusDiv.innerHTML = `
+                <div style="font-size: 1.1rem; line-height: 2;">
+                    ${necessaryStatus}<br>
+                    ${analyticsStatus}<br>
+                    ${marketingStatus}
+                </div>
+                <div style="margin-top: 15px; color: var(--gray-light); font-size: 0.9rem;">
+                    <strong>Versão:</strong> ${prefs.version}<br>
+                    <strong>Respondido:</strong> ${prefs.hasResponded ? 'Sim' : 'Não'}<br>
+                    <strong>Última atualização:</strong> ${prefs.timestamp ? new Date(prefs.timestamp).toLocaleString() : 'N/A'}
+                </div>
+            `;
+        }
+        
+        // Resetar consentimento
+        function resetConsent() {
+            if (confirm('Isso irá resetar suas preferências de cookies e recarregar a página. Continuar?')) {
+                CookieConsent.reset();
+            }
+        }
+        
+        // Testar isEnabled
+        function testIsEnabled(type) {
+            const enabled = CookieConsent.isEnabled(type);
+            const output = document.getElementById('apiOutput');
+            output.textContent = `CookieConsent.isEnabled('${type}') = ${enabled}`;
+            logEvent(`API: isEnabled('${type}') retornou ${enabled}`);
+        }
+        
+        // Testar getPreferences
+        function testGetPreferences() {
+            const prefs = CookieConsent.getPreferences();
+            const output = document.getElementById('apiOutput');
+            output.textContent = JSON.stringify(prefs, null, 2);
+            logEvent('API: getPreferences() chamado');
+        }
+        
+        // Testar Analytics
+        function testAnalytics() {
+            if (typeof Analytics === 'undefined') {
+                alert('❌ Analytics não está disponível');
+                return;
+            }
+            
+            const enabled = Analytics.isEnabled();
+            alert(`Analytics está ${enabled ? '✅ habilitado' : '❌ desabilitado'}\n\n` +
+                  `Consentimento Analytics: ${CookieConsent.isEnabled('analytics')}`);
+            
+            if (enabled) {
+                Analytics.trackEvent('test_event', {
+                    source: 'cookie_test_page'
+                });
+                logEvent('📊 Evento de teste enviado para Analytics');
+            } else {
+                logEvent('⚠️ Analytics não enviou evento (desabilitado)');
+            }
+        }
+        
+        // Inicializar status ao carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatus();
+            logEvent('✅ Página de teste carregada');
+        });
+    </script>
+</body>
+</html>
+
