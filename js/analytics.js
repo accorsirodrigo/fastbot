@@ -34,7 +34,7 @@
         
         return GA_CONFIG.enabled && 
                GA_CONFIG.measurementId !== 'G-XXXXXXXXXX' && 
-               !doNotTrack;
+               !isLocalhost;
     }
     
     /**
